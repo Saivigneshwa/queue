@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+#define SIZE 10
+
+int queue[SIZE];
+int front = -1, rear = -1;
+
+
+void enqueue(int value) {
+    if (rear == SIZE - 1) {
+        printf("ADC Queue Full\n");
+        return;
+    }
+
+    if (front == -1)
+        front = 0;
+
+    rear++;
+    queue[rear] = value;
+    printf("ADC Sample Inserted: %d\n", value);
+}
+
+
+int dequeue() {
+    if (front == -1 || front > rear) {
+        printf("ADC Queue Underflow\n");
+        return -1;
+    }
+
+    return queue[front++];
+}
+
+int main() {
+    int i;
+
+    /* Insert 10 ADC samples */
+    for (i = 1; i <= 10; i++) {
+        enqueue(i * 100);
+    }
+
+    printf("\nRemoving every 2nd ADC sample:\n");
+
+    while (front <= rear) {
+        int first = dequeue();   // Skip
+        if (front <= rear) {
+            int second = dequeue();
+            printf("Processed ADC Sample: %d\n", second);
+        }
+    }
+
+    printf("\nAttempting extra removal:\n");
+    dequeue();   // Underflow report
+
+    return 0;
+}
