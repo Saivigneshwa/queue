@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+#define SIZE 6
+
+char queue[SIZE];
+int front = -1, rear = -1;
+
+
+void enqueue(char data) {
+    if (rear == SIZE - 1) {
+        printf("UART Buffer Overflow! '%c' lost\n", data);
+        return;
+    }
+
+    if (front == -1)
+        front = 0;
+
+    rear++;
+    queue[rear] = data;
+    printf("Received: %c\n", data);
+}
+
+
+void dequeue() {
+    if (front == -1 || front > rear) {
+        printf("UART Buffer Empty (Underflow)\n");
+        return;
+    }
+
+    printf("Transmitted: %c\n", queue[front]);
+    front++;
+}
+
+int main() {
+    enqueue('H');
+    enqueue('E');
+    enqueue('L');
+    enqueue('L');
+    enqueue('O');
+    enqueue('!');
+
+    enqueue('X');   
+
+    printf("\nUART Output:\n");
+    dequeue();
+    dequeue();
+    dequeue();
+    dequeue();
+    dequeue();
+    dequeue();
+
+    dequeue();      
+
+    return 0;
+}
